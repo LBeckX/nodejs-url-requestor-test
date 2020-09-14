@@ -11,8 +11,14 @@ const req = new Req(options);
 req.addEvent(ReqEvents.SUCCESS, (ev) => {
    ev.response.setEncoding("utf-8");
 
+   let dataBuffer = '';
+
    ev.response.on("data", (data) => {
-      console.log(parse(data).valid, Date.now());
+      dataBuffer += data;
+   });
+
+   ev.response.on("close", () => {
+       console.log(parse(dataBuffer).valid);
    });
 });
 
